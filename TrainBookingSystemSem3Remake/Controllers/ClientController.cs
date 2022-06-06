@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 using TrainBookingSystemSem3Remake.Data;
 using TrainBookingSystemSem3Remake.Models;
@@ -253,34 +254,39 @@ namespace TrainBookingSystemSem3Remake.Controllers
                 return Json("Thêm vé vào giỏ hàng thành công", JsonRequestBehavior.AllowGet);
             }
         }
-
+        [AllowCrossSiteJson]
         public ActionResult ShoppingCart()
         {
             listTickets = Session["CartItems"] as List<Cart>;
             return View(listTickets);
         }
-        //[EnableCors(origins: "*", headers: "*",
-        //methods: "*", SupportsCredentials = true)]
+        [HttpGet]
+        [AllowCrossSiteJson]
         public ActionResult Payment()
         {
+            var total = 0.0;
+            listTickets = Session["CartItems"] as List<Cart>;
             string url = ConfigurationManager.AppSettings["vnp_Url"];
-            string returnUrl = ConfigurationManager.AppSettings["ReturnUrl"];
+            string returnUrl = ConfigurationManager.AppSettings["vnp_Returnurl"];
             string tmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"];
             string hashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"];
-
+            foreach (var item in listTickets)
+            {
+                total += item.Ticket.Price;
+            }
             PayLib pay = new PayLib();
 
             pay.AddRequestData("vnp_Version", "2.1.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
             pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-            pay.AddRequestData("vnp_Amount", "1000000"); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+            pay.AddRequestData("vnp_Amount", Convert.ToString(total*100)); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
             pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
             pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
             pay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress()); //Địa chỉ IP của khách hàng thực hiện giao dịch
             pay.AddRequestData("vnp_Locale", "vn"); //Ngôn ngữ giao diện hiển thị - Tiếng Việt (vn), Tiếng Anh (en)
-            pay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang"); //Thông tin mô tả nội dung thanh toán
-            pay.AddRequestData("vnp_OrderType", "other"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
+            pay.AddRequestData("vnp_OrderInfo", "Thanh toán vé tàu"); //Thông tin mô tả nội dung thanh toán
+            pay.AddRequestData("vnp_OrderType", "Thanh toán vé tàu"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
             pay.AddRequestData("vnp_ReturnUrl", returnUrl); //URL thông báo kết quả giao dịch khi Khách hàng kết thúc thanh toán
             pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
 
@@ -293,6 +299,8 @@ namespace TrainBookingSystemSem3Remake.Controllers
         {
             if (Request.QueryString.Count > 0)
             {
+                List<Ticket> listUpdated = new List<Ticket>();
+                listTickets = Session["CartItems"] as List<Cart>;
                 string hashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Chuỗi bí mật
                 var vnpayData = Request.QueryString;
                 PayLib pay = new PayLib();
@@ -319,6 +327,15 @@ namespace TrainBookingSystemSem3Remake.Controllers
                     {
                         //Thanh toán thành công
                         ViewBag.Message = "Thanh toán thành công hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId;
+                        foreach (var item in listTickets)
+                        {
+                            var ticket = db.Tickets.Find(item.Ticket.Id);
+                            ticket.Status = 2;
+                            ticket.BookingDate = DateTime.Now;
+                            listUpdated.Add(ticket);
+                        }
+                        listUpdated.ForEach(s => db.Tickets.AddOrUpdate(s));
+                        db.SaveChanges();
                     }
                     else
                     {

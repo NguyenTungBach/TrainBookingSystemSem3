@@ -24,8 +24,7 @@
         }
         <div class="line"></div>
     </div>
-    <a href="@Url.Action("Payment","Client")">Thanh toán</a>
-
+    <a style="text-decoration:none;color:black" href="@Url.Action("Payment","Client")">Thanh toán</a>
     <!-- Tab content -->
     <div class="tab-content">
         <div class="tab-pane active">
@@ -57,16 +56,16 @@
                                             switch (j)
                                             {
                                                 case 1:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" disabled data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
                                                     break;
                                                 case 2:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" disabled data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
                                                     break;
                                                 case 3:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> C @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" disabled data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> C @i </span>
                                                     break;
                                                 case 4:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" disabled data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
                                                     break;
                                             }
 

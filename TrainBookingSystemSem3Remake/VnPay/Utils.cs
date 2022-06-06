@@ -9,6 +9,7 @@ namespace TrainBookingSystemSem3Remake.VnPay
 {
     public class Utils
     {
+
         public static String HmacSHA512(string key, String inputData)
         {
             var hash = new StringBuilder();
@@ -42,7 +43,6 @@ namespace TrainBookingSystemSem3Remake.VnPay
 
             return ipAddress;
         }
-
 
     }
 }

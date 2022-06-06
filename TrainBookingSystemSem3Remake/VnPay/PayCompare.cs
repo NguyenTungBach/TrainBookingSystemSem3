@@ -6,10 +6,9 @@ using System.Web;
 
 namespace TrainBookingSystemSem3Remake.VnPay
 {
-    public class PayCompare: Comparer<string>
+    public class PayCompare : IComparer<string>
     {
-        
-        public override int Compare(string x, string y)
+        public int Compare(string x, string y)
         {
             if (x == y) return 0;
             if (x == null) return -1;

@@ -46,17 +46,8 @@
         <h3>@totalPrice.ToString("#,##0").Replace(',', ',') VNĐ</h3>
     </div>
     <div class="col">
-        <button style="margin-top:20px" onclick="CheckOut()" class="btn btn-danger">CheckOut</button>
+        <button class="btn btn-danger" style="margin-top:13px">
+            <h4> <a style="text-decoration:none;color:black" href="@Url.Action("Payment","Client")">Thanh toán</a></h4>
+        </button>
     </div>
 </div>
-<script>
-    function CheckOut() {
-        $.ajax({
-            type: "POST",
-            url: "Payment",
-            xhrFields: {
-                withCredentials: true
-            }
-        })
-    }
-</script>
