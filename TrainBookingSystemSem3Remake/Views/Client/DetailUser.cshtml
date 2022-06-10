@@ -39,6 +39,7 @@
             <th scope="col">Nơi đến</th>
             <th scope="col">Nơi đi</th>
             <th scope="col">Ngày đặt vé</th>
+            @*<th scope="col">Trạng thái vé</th>*@
         </tr>
     </thead>
     <tbody>
@@ -73,6 +74,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
             </td>
+            @*<td>
+                @item.Status
+            </td>*@
         </tr>
             }
         }

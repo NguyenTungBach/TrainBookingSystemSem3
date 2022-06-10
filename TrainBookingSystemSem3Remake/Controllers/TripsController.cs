@@ -225,18 +225,22 @@ namespace TrainBookingSystemSem3Remake.Controllers
         {
 
             var ticket = db.Tickets.Find(id);
-
-            switch (ticket.Status)
-            {
-                case 1:
-                    ticket.Status = 2;
-                    ticket.BookingDate = DateTime.Now;
-                    break;
-                case 2:
-                    ticket.Status = 1;
-                    ticket.BookingDate = DateTime.Now;
-                    break;
-            }
+            ticket.Status = 1;
+            //switch (ticket.Status)
+            //{
+            //    case 1:
+            //        ticket.Status = 1;
+        
+            //        break;
+            //    case 2:
+            //        ticket.Status = 1;
+                  
+            //        break;
+            //    case 3:
+            //        ticket.Status = 1;
+                    
+            //        break;
+            //}
 
             db.Tickets.AddOrUpdate(ticket);
             db.SaveChanges();

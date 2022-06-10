@@ -185,51 +185,57 @@
                 buttonsStyling: false
             })
 
+            if (status == 1) {
+                swalWithBootstrapButtons.fire(
+                    'Thông tin vé',
+                    `this ticket has price is ${price} and time start is ${startDateTime}`,
+                )
+            } else {
+                swalWithBootstrapButtons.fire({
+                    title: 'Bạn có chắc muốn hủy vé?',
+                    text: `this ticket has price is ${price} and time start is ${startDateTime}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Disable this ticket!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        swalWithBootstrapButtons.fire(
+                            'Đã hủy!',
+                            'Đã hủy vé này'
+                        )
+                        $.ajax({
+                            url: "/Trips/ChangeStatusTicket",
+                            type: 'POST',
+                            data: data,
+                            success: function (data) {
+                                console.log("console log thư thành công: ", data);
+                                if (data == null || data == "") {
+                                    swalWithBootstrapButtons.fire(
+                                        'Must Login or not Authorization',
+                                        'You must login before booking or you are not Admin'
+                                    )
+                                } else {
+                                    window.location.reload(false);
+                                }
+                            },
+                            error: function (request, error) {
+                                console.log("Request: " + request);
+                            }
+                        });
 
-            //swalWithBootstrapButtons.fire({
-            //    title: 'Are you sure?',
-            //    text: status == 2 ? `Are you sure disable this ticket has price is ${price} and time start is ${startDateTime}` : `Ticket has price is ${price} and time start is ${startDateTime}`,
-            //    icon: 'warning',
-            //    showCancelButton: true,
-            //    confirmButtonText: 'Yes, Check this ticket!',
-            //    cancelButtonText: 'No, cancel!',
-            //    reverseButtons: true
-            //}).then((result) => {
-            //    if (result.isConfirmed) {
-            //        swalWithBootstrapButtons.fire(
-            //            'Booked!',
-            //            'Your booking is recorded.'
-            //        )
-            //        $.ajax({
-            //            url: "/Client/ChangeStatusTicket",
-            //            type: 'POST',
-            //            data: data,
-            //            success: function (data) {
-            //                console.log("console log thư thành công: ", data);
-            //                if (data == null || data == "") {
-            //                    swalWithBootstrapButtons.fire(
-            //                        'Must Login or not Authorization',
-            //                        'You must login before booking or you are not Admin'
-            //                    )
-            //                } else {
-            //                    window.location.reload(false);
-            //                }
-            //            },
-            //            error: function (request, error) {
-            //                console.log("Request: " + request);
-            //            }
-            //        });
-
-            //    } else if (
-            //        /* Read more about handling dismissals below */
-            //        result.dismiss === Swal.DismissReason.cancel
-            //    ) {
-            //        swalWithBootstrapButtons.fire(
-            //            'Cancelled',
-            //            'Your booking is cancelled :)'
-            //        )
-            //    }
-            //})
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Bạn đã ko hủy vé'
+                        )
+                    }
+                })
+            }
 
         });
     })
