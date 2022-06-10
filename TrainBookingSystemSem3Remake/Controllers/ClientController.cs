@@ -158,7 +158,8 @@ namespace TrainBookingSystemSem3Remake.Controllers
                         TrainStationFrom = itemBooking.Ticket.Trip.TrainStationFrom.Name,
                         TrainStationTo = itemBooking.Ticket.Trip.TrainStationTo.Name,
                         TrainCarriagesName = itemBooking.Ticket.TrainCarriages.Name,
-                        Booking = converBookingToString(itemBooking.Ticket.Row, itemBooking.Ticket.Colunm)
+                        Booking = converBookingToString(itemBooking.Ticket.Row, itemBooking.Ticket.Colunm),
+                        //Status = itemBooking.Ticket.Status
                     };
                     listTicketUser.Add(ticketBookingModel);
                 }
@@ -425,7 +426,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
                 }
             }
 
-            return View();
+            return Redirect("/Client/DetailUser");
         }
 
 

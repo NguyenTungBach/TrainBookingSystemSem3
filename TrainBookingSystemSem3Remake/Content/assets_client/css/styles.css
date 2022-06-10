@@ -61,7 +61,7 @@
 }
 
 .slide:hover .navigate-slider {
-    display: block;
+    /*display: block;*/
 }
 
 /*.navigate-slider i:last-child {*/

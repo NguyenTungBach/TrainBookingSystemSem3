@@ -14,6 +14,7 @@ namespace TrainBookingSystemSem3Remake.Models.ViewModel
         public string TrainStationTo { get; set; }
         public string TrainCarriagesName { get; set; }
         public string Booking { get; set; }
+        public int Status { get; set; }
         public DateTime BookingDate { get; set; }
     }
 }

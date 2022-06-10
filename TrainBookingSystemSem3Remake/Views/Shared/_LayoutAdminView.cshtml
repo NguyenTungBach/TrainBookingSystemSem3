@@ -40,18 +40,18 @@
                     </a>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="https://localhost:44379/Trips/DashBoard">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
+                    @*<li>
+            <a class="nav-link active" href="">
+                <i class="nc-icon nc-circle-09"></i>
+                <p>User Profile</p>
+            </a>
+        </li>*@
                     <li>
                         <a class="nav-link" href="https://localhost:44379/Trips/Create">
                             <i class="nc-icon nc-notes"></i>
@@ -70,12 +70,12 @@
                             <p>List Ticket Existing</p>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="">
-                            <i class="nc-icon nc-bell-55"></i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
+                    @*<li>
+            <a class="nav-link" href="">
+                <i class="nc-icon nc-bell-55"></i>
+                <p>Notifications</p>
+            </a>
+        </li>*@
                 </ul>
             </div>
         </div>
@@ -119,29 +119,46 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav ml-auto">
+                            @using Microsoft.AspNet.Identity
+                            @if (Request.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link">
+                                        <span class="no-icon">Tên: @User.Identity.GetUserName()</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Client/Logout" onclick="return confirm('Thoát không bạn ơi?')">
+                                        <span class="no-icon">Log out</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
                             <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Account</span>
+                                <a class="nav-link" href="/Client/Login">
+                                    <span class="no-icon">Đăng nhập</span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Log out</span>
-                                </a>
-                            </li>
+                                @*<li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="no-icon">Dropdown</span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <div class="divider"></div>
+                                        <a class="dropdown-item" href="#">Separated link</a>
+                                    </div>
+                                </li>*@
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Client/Register">
+                                        <span class="no-icon">Register</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
